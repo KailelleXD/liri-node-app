@@ -18,6 +18,8 @@ var queryURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_i
 
 // console.log(queryURL);
 
+// node liri.js concert-this <"name of artist">
+// function to query the bandsintown API and display pertinent information.
 function concertThis() {
     request(queryURL, function(err, res, body) {
         // If the request was successful...
@@ -48,6 +50,19 @@ function concertThis() {
     });
 } /// concertThis();
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // spotify-this-song <song name here>
+        // This will show the following info about hte song in your terminal/bash window.
+            // Artist(s)
+            // The song's name
+            // A preview link of the song from Spotify
+            // The album that the song is from
+        // If no song is provided then your program will default to 'The Sign' by Ace of Base.
+        // Use the node-spotify-api package to retrieve song info from the Spotify API.
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 //// Switch Statement ////
 switch(cmd) {
@@ -71,14 +86,7 @@ switch(cmd) {
 
 
 
-    // spotify-this-song <song name here>
-        // This will show the following info about hte song in your terminal/bash window.
-            // Artist(s)
-            // The song's name
-            // A preview link of the song from Spotify
-            // The album that the song is from
-        // If no song is provided then your program will default to 'The Sign' by Ace of Base.
-        // Use the node-spotify-api package to retrieve song info from the Spotify API.
+
 
     // movie-this <movie name here>
         // This will output the following information to your terminal/bash window.
