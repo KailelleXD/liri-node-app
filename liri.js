@@ -4,57 +4,69 @@ var keys = require("./keys.js");
 var request = require('request');
 var moment = require('moment');
 
+// Variable for switch statement, to determine function that the user wants to use.
+var cmd = process.argv[2];
+var userArg = process.argv[3];
+
 // Below is the syntax used to access my API keys for this project while keeping them private to users online.
 // var spotify = new Spotify(keys.spotify);
 
-// Psuedo-code/code for the following functionality with liri and nodeJS.
-    // concert-this <artist/band name here>
-        // Using the 'Bands in Town Artist Events API'
-        // ("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp")
-        // searches for an artist and renders the following info about each event to terminal.
-            // Name of the venue
-            // Venue Location
-            // Date of the Event (Use moment.js to format this as 'MM/DD/YYYY')
+var artist = process.argv[3];
 
-// console.log user argument.
-// console.log(process.argv[2]);
-// store user argument in a variable called artist.
-var artist = process.argv[2];
-// console.log the variable.
-// console.log(artist);
 // Use request package to query bandsintown API.
 var queryURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp"
 
 // console.log(queryURL);
 
-request(queryURL, function(err, res, body) {
-    // If the request was successful...
-  if (!err && res.statusCode === 200) {
-
-    // Then log the body from the site!
-    // console.log(body);
-
-    var obj = JSON.parse(body);
-
-    // console.log(obj[0].venue.name);
-        console.log(" ");
-        console.log("Here are some upcoming events involving: " + artist)
-        console.log("--------------------------------------------------");
-
-        for (let i = 0; i < obj.length; i++) {
-
-            // use moment.js to change the event date format to MM/DD/YYYY
-            var showDate = moment(obj[i].datetime).format('L');
-
+function concertThis() {
+    request(queryURL, function(err, res, body) {
+        // If the request was successful...
+      if (!err && res.statusCode === 200) {
+    
+        // Then log the body from the site!
+        // console.log(body);
+    
+        var obj = JSON.parse(body);
+    
+        // console.log(obj[0].venue.name);
             console.log(" ");
-            console.log("Venue: " + obj[i].venue.name);
-            console.log("Location: " + obj[i].venue.city + " " + obj[i].venue.region);
-            console.log("Date: " + showDate);
-            console.log("-----------------------");
-        }
-    }  
-});
+            console.log("Here are some upcoming events involving: " + artist)
+            console.log("--------------------------------------------------");
+    
+            for (let i = 0; i < obj.length; i++) {
+    
+                // use moment.js to change the event date format to MM/DD/YYYY
+                var showDate = moment(obj[i].datetime).format('L');
+    
+                console.log(" ");
+                console.log("Venue: " + obj[i].venue.name);
+                console.log("Location: " + obj[i].venue.city + " " + obj[i].venue.region);
+                console.log("Date: " + showDate);
+                console.log("-----------------------");
+            }
+        }  
+    });
+} /// concertThis();
 
+
+//// Switch Statement ////
+switch(cmd) {
+    case "concert-this":
+        concertThis();
+        break;
+    case "spotify-this-song":
+        console.log("You have run: " + cmd);
+        console.log("with a user defined argument of: " + userArg)
+        break;
+    case "movie-this":
+        console.log("You have run: " + cmd);
+        console.log("with a user defined argument of: " + userArg)
+        break;
+    case "do-what-it-says":
+        console.log("You have run: " + cmd);
+        console.log("with a user defined argument of: " + userArg)
+        break;
+}
 
 
 
