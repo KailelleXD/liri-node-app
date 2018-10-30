@@ -3,6 +3,7 @@ require("dotenv").config();
 var keys = require("./keys.js");
 var request = require('request');
 var moment = require('moment');
+var Spotify = require('node-spotify-api');
 
 // Variable for switch statement, to determine function that the user wants to use.
 var cmd = process.argv[2];
@@ -50,18 +51,61 @@ function concertThis() {
     });
 } /// concertThis();
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// node liri.js spotify-this-song <"name of song">
+// function to query the spotify API and display pertinent information.
+function spotifyThisSong() {
 
-    // spotify-this-song <song name here>
-        // This will show the following info about the song in your terminal/bash window.
-            // Artist(s)
-            // The song's name
-            // A preview link of the song from Spotify
-            // The album that the song is from
-        // If no song is provided then your program will default to 'The Sign' by Ace of Base.
-        // Use the node-spotify-api package to retrieve song info from the Spotify API.
+    if (userArg === undefined) {
+        userArg = "Ace of Base The Sign";
+    }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    var spotify = new Spotify({
+        id: keys.spotify.id,
+        secret: keys.spotify.secret
+        });
+        spotify.search({ type: 'track', query: userArg}, function(err, data) {
+        if (err) {
+            return console.log('Error occurred: ' + err);
+        }
+        var artistInfo = data.tracks.items[0].artists;
+        var songTitle = data.tracks.items[0].name;
+        var extLink = data.tracks.items[0].external_urls.spotify;
+        var albumName = data.tracks.items[0].album.name;
+        console.log(" ");
+        console.log("Spotify-ing the song: " + songTitle)
+        console.log("--------------------------------------------------");
+        console.log("Artist(s): " + artistInfo[0].name);
+        console.log("Song Title: " + songTitle);
+        console.log("Click link to listen! " + extLink);
+        console.log("Album name: " + albumName);
+        console.log("--------------------------------------------------");
+        });
+} /// spotifyThisSong();
+
+// node liri.js movie-this <"name of movie">
+// function to query the omdb API and display pertinent information.
+function movieThis() {
+
+
+
+        // movie-this <movie name here>
+        // This will output the following information to your terminal/bash window.
+            // Title of the movie.
+            // Year of release.
+            // IMDB Rating of the movie.
+            // Rotten Tomatoes Rating of the movie.
+            // Country where the movie was produced.
+            // Language of the movie.
+            // Plot of the movie.
+            // Actors in the movie.
+        // If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody'
+        // Use the request package to retrieve data from OMDB API. Use the bootcamp API key (trilogy)
+
+
+
+}
+
+
 
 
 //// Switch Statement ////
@@ -70,8 +114,7 @@ switch(cmd) {
         concertThis();
         break;
     case "spotify-this-song":
-        console.log("You have run: " + cmd);
-        console.log("with a user defined argument of: " + userArg)
+        spotifyThisSong();
         break;
     case "movie-this":
         console.log("You have run: " + cmd);
@@ -88,18 +131,7 @@ switch(cmd) {
 
 
 
-    // movie-this <movie name here>
-        // This will output the following information to your terminal/bash window.
-            // Title of the movie.
-            // Year of release.
-            // IMDB Rating of the movie.
-            // Rotten Tomatoes Rating of the movie.
-            // Country where the movie was produced.
-            // Language of the movie.
-            // Plot of the movie.
-            // Actors in the movie.
-        // If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody'
-        // Use the request package to retrieve data from OMDB API. Use the bootcamp API key (trilogy)
+
 
     // do-what-it-says
         // Using the fs Node package, LIRI will take the text inside of the random.txt and then use it to call one of LIRI's commands.
