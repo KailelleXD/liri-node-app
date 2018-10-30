@@ -53,7 +53,7 @@ function concertThis() {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // spotify-this-song <song name here>
-        // This will show the following info about hte song in your terminal/bash window.
+        // This will show the following info about the song in your terminal/bash window.
             // Artist(s)
             // The song's name
             // A preview link of the song from Spotify
