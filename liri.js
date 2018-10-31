@@ -4,6 +4,7 @@ var keys = require("./keys.js");
 var request = require('request');
 var moment = require('moment');
 var Spotify = require('node-spotify-api');
+var fs = require("fs");
 
 // Variable for switch statement, to determine function that the user wants to use.
 var cmd = process.argv[2];
@@ -136,25 +137,51 @@ function movieThis() {
 
 }
 
+// node liri.js do-what-it-says
+// function to read the file random.txt and use the information contained within to run one of the liri commands.
+function doWhatItSays() {
+    fs.readFile("random.txt", "utf8", function(err, data) {
+        if (err) {
+          return console.log(err);
+        }
+    
+        // console.log(data);
+        var randomArr = data.split(",");
+
+        console.log("The contents of random.txt is: " + data);
+
+        cmd = randomArr[0];
+        userArg = randomArr[1];
+
+        cmdSwitch();
+      
+      });
+} /// doWhatItSays();
+
+function cmdSwitch() {
+    switch(cmd) {
+        case "concert-this":
+            concertThis();
+            break;
+        case "spotify-this-song":
+            spotifyThisSong();
+            break;
+        case "movie-this":
+            movieThis();
+            break;
+        case "do-what-it-says":
+            doWhatItSays();
+            break;
+    }
+} /// cmdSwitch();
+
+cmdSwitch();
+
 
 
 
 //// Switch Statement ////
-switch(cmd) {
-    case "concert-this":
-        concertThis();
-        break;
-    case "spotify-this-song":
-        spotifyThisSong();
-        break;
-    case "movie-this":
-        movieThis();
-        break;
-    case "do-what-it-says":
-        console.log("You have run: " + cmd);
-        console.log("with a user defined argument of: " + userArg)
-        break;
-}
+
 
 
 
