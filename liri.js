@@ -4,6 +4,7 @@ var keys = require("./keys.js");
 var request = require('request');
 var moment = require('moment');
 var Spotify = require('node-spotify-api');
+var fs = require("fs");
 
 // Variable for switch statement, to determine function that the user wants to use.
 var cmd = process.argv[2];
@@ -14,14 +15,14 @@ var userArg = process.argv[3];
 
 var artist = process.argv[3];
 
-// Use request package to query bandsintown API.
-var queryURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp"
-
 // console.log(queryURL);
 
 // node liri.js concert-this <"name of artist">
 // function to query the bandsintown API and display pertinent information.
 function concertThis() {
+    // Use request package to query bandsintown API.
+    var queryURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp"
+
     request(queryURL, function(err, res, body) {
         // If the request was successful...
       if (!err && res.statusCode === 200) {
@@ -86,6 +87,37 @@ function spotifyThisSong() {
 // function to query the omdb API and display pertinent information.
 function movieThis() {
 
+    if (userArg === undefined) {
+        userArg = "Mr. Nobody";
+    }
+
+    var queryURL = "http://www.omdbapi.com/?apikey=trilogy&t=" + userArg
+    request(queryURL, function(err, res, body) {
+        // If the request was successful...
+      if (!err && res.statusCode === 200) {
+    
+        var obj = JSON.parse(body);
+
+        console.log(" ");
+        console.log("Below is information about the movie: " + obj.Title);
+        console.log("-----------------------");
+        console.log("Title: " + obj.Title);
+        console.log("Year of Release: " + obj.Year);
+
+        for (let i = 0; i < obj.Ratings.length; i++) {
+            console.log(obj.Ratings[i].Source + ": " + obj.Ratings[i].Value);
+        }
+
+        console.log("Country of Origin: " + obj.Country);
+        console.log("Language: " + obj.Language);
+        console.log("-----------------------");
+        console.log("Plot Summary: " + obj.Plot);
+        console.log("Actors: " + obj.Actors);
+        console.log("-----------------------");
+
+        }  
+    });
+
 
 
         // movie-this <movie name here>
@@ -105,26 +137,51 @@ function movieThis() {
 
 }
 
+// node liri.js do-what-it-says
+// function to read the file random.txt and use the information contained within to run one of the liri commands.
+function doWhatItSays() {
+    fs.readFile("random.txt", "utf8", function(err, data) {
+        if (err) {
+          return console.log(err);
+        }
+    
+        // console.log(data);
+        var randomArr = data.split(",");
+
+        console.log("The contents of random.txt is: " + data);
+
+        cmd = randomArr[0];
+        userArg = randomArr[1];
+
+        cmdSwitch();
+      
+      });
+} /// doWhatItSays();
+
+function cmdSwitch() {
+    switch(cmd) {
+        case "concert-this":
+            concertThis();
+            break;
+        case "spotify-this-song":
+            spotifyThisSong();
+            break;
+        case "movie-this":
+            movieThis();
+            break;
+        case "do-what-it-says":
+            doWhatItSays();
+            break;
+    }
+} /// cmdSwitch();
+
+cmdSwitch();
+
 
 
 
 //// Switch Statement ////
-switch(cmd) {
-    case "concert-this":
-        concertThis();
-        break;
-    case "spotify-this-song":
-        spotifyThisSong();
-        break;
-    case "movie-this":
-        console.log("You have run: " + cmd);
-        console.log("with a user defined argument of: " + userArg)
-        break;
-    case "do-what-it-says":
-        console.log("You have run: " + cmd);
-        console.log("with a user defined argument of: " + userArg)
-        break;
-}
+
 
 
 
