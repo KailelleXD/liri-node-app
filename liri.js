@@ -14,14 +14,14 @@ var userArg = process.argv[3];
 
 var artist = process.argv[3];
 
-// Use request package to query bandsintown API.
-var queryURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp"
-
 // console.log(queryURL);
 
 // node liri.js concert-this <"name of artist">
 // function to query the bandsintown API and display pertinent information.
 function concertThis() {
+    // Use request package to query bandsintown API.
+    var queryURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp"
+
     request(queryURL, function(err, res, body) {
         // If the request was successful...
       if (!err && res.statusCode === 200) {
@@ -86,6 +86,37 @@ function spotifyThisSong() {
 // function to query the omdb API and display pertinent information.
 function movieThis() {
 
+    if (userArg === undefined) {
+        userArg = "Mr. Nobody";
+    }
+
+    var queryURL = "http://www.omdbapi.com/?apikey=trilogy&t=" + userArg
+    request(queryURL, function(err, res, body) {
+        // If the request was successful...
+      if (!err && res.statusCode === 200) {
+    
+        var obj = JSON.parse(body);
+
+        console.log(" ");
+        console.log("Below is information about the movie: " + obj.Title);
+        console.log("-----------------------");
+        console.log("Title: " + obj.Title);
+        console.log("Year of Release: " + obj.Year);
+
+        for (let i = 0; i < obj.Ratings.length; i++) {
+            console.log(obj.Ratings[i].Source + ": " + obj.Ratings[i].Value);
+        }
+
+        console.log("Country of Origin: " + obj.Country);
+        console.log("Language: " + obj.Language);
+        console.log("-----------------------");
+        console.log("Plot Summary: " + obj.Plot);
+        console.log("Actors: " + obj.Actors);
+        console.log("-----------------------");
+
+        }  
+    });
+
 
 
         // movie-this <movie name here>
@@ -117,8 +148,7 @@ switch(cmd) {
         spotifyThisSong();
         break;
     case "movie-this":
-        console.log("You have run: " + cmd);
-        console.log("with a user defined argument of: " + userArg)
+        movieThis();
         break;
     case "do-what-it-says":
         console.log("You have run: " + cmd);
