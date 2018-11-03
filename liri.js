@@ -4,6 +4,7 @@ var keys = require("./keys.js");
 var request = require('request');
 var moment = require('moment');
 var Spotify = require('node-spotify-api');
+var inquirer = require('inquirer');
 var fs = require("fs");
 
 // Variable for switch statement, to determine function that the user wants to use.
@@ -158,6 +159,7 @@ function doWhatItSays() {
       });
 } /// doWhatItSays();
 
+// function to run the switch statment and call the other functions depending on the variable cmd.
 function cmdSwitch() {
     switch(cmd) {
         case "concert-this":
@@ -175,27 +177,13 @@ function cmdSwitch() {
     }
 } /// cmdSwitch();
 
-cmdSwitch();
+// cmdSwitch(); // Commented-out to add Inquirer package functionality.
 
+// Make the necessary revisions to the app to allow the user to interact with liri-bot using the inquirer package instead of process.argv
 
-
-
-//// Switch Statement ////
-
-
-
-
-
-
-
-
-
-    // do-what-it-says
-        // Using the fs Node package, LIRI will take the text inside of the random.txt and then use it to call one of LIRI's commands.
-            // It should run [spotify-this-song] for "I Want it That Way," as follows the text in random.txt
-            // Edit the text in random.txt to test out the feature for movie-this and concert-this.
-    
-    // BONUS
-        // Output any data to log.txt in addition to logging to terminal/bash. (use append)
-    
-    
+// Use Inquirer - Multiple choice - To have the user choose between 1 of 4 options: concert-this, spotify-this-song, movie-this, and do-what-it-says.
+// for [concert-this] - ask for the user to input an artist(s) name, assign that input to the variable artist, and call the concertThis(); function.
+// for [spotify-this-song] - ask for the user to input a song title, assign that input to the vaariable userArg, and call the spotifyThisSong(); function.
+// for [movie-this] - ask the user to input a movie title, assign that input to the variable userArg, and call the movieThis(); function.
+// for [do-what-it-says] - change the entire function to cycle through the comma-separated values and display the options as multiple choice for the user.
+    // after the user makes a selection, use the information located in the text file to run the appropriate function with the correct variable information.
