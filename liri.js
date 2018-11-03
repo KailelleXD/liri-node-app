@@ -7,35 +7,60 @@ var Spotify = require('node-spotify-api');
 var inquirer = require('inquirer');
 var fs = require("fs");
 
-// Variable for switch statement, to determine function that the user wants to use.
+var cmd = ""; // Variable for switch statement, to determine function that the user wants to use.
+var userArg = ""; // Variable for user input from inquirer.
+
 // var cmd = process.argv[2]; // Commented-out to add Inquirer package functionality.
 // var userArg = process.argv[3]; // Commented-out to add Inquirer package functionality.
 // var artist = process.argv[3]; // Commented-out to add Inquirer package functionality.
 
 // console.log(queryURL);
 
+// function that uses inquirer - List - To have the user choose between 1 of 4 options: concert-this, spotify-this-song, movie-this, and do-what-it-says.
+function makeAChoice() {
+    inquirer
+      .prompt([
+        {
+          type: 'list',
+          name: 'cmd',
+          message: 'Please choose 1 of 4 tasks for Liri-bot to accomplish.',
+          choices: ['do-what-it-says', 'concert-this', 'spotify-this-song', 'movie-this']
+        }
+      ])
+      .then(answers => {
+        cmd = answers.cmd;
+        cmdSwitch();
+      });
+    } /// makeAChoice();
+    
+
 // function to run inquirer to ask the user to input an artist(s) to look-up.
 function iqConcertThis() {
-    // Using inquirer, ask for the user to input an artist(s) name, assign that input to the variable artist, and call the concertThis(); function.
-    inquirer
-    .prompt([
-        {
-        type: 'input',
-        name: 'artist',
-        message: 'Please provide Liri-bot with the artist(s) you would like to look-up: '
-        }
-    ])
-    .then(answers => {
-        artist = answers.artist;
+    // Using inquirer, ask for the user to input an artist(s) name, assign that input to the variable userArg, and call the concertThis(); function.
+    // IF, userArg === "". THEN, call inquirer methods. ELSE, call concertThis(); function.
+    if (userArg === "") {
+        inquirer
+        .prompt([
+            {
+            type: 'input',
+            name: 'userArg',
+            message: 'Please provide Liri-bot with the artist(s) you would like to look-up: '
+            }
+        ])
+        .then(answers => {
+            userArg = answers.userArg;
+            concertThis();
+        });
+    } else {
         concertThis();
-    });
+    }
 } /// iqConcertThis();
 
 // node liri.js concert-this <"name of artist">
 // function to query the bandsintown API and display pertinent information.
 function concertThis() {    
     // Use request package to query bandsintown API.
-    var queryURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp"
+    var queryURL = "https://rest.bandsintown.com/artists/" + userArg + "/events?app_id=codingbootcamp"
 
     request(queryURL, function(err, res, body) {
         // If the request was successful...
@@ -69,19 +94,25 @@ function concertThis() {
 // function to run inquirer to ask the user to input a song title to look-up.
 function iqSpotifyThisSong() {
     // Using inquirer, ask for the user to input a song title, assign that input to the variable userArg, and call the spotifyThisSong(); function.
-    inquirer
-    .prompt([
-        {
-        type: 'input',
-        name: 'userArg',
-        message: 'Please provide Liri-bot with the song that you would like to look-up: '
-        }
-    ])
-    .then(answers => {
-        userArg = answers.userArg;
+    // IF, userArg === "". THEN, call inquirer methods. ELSE, call spotifyThisSong(); function.
+    if (userArg === "") {
+        inquirer
+        .prompt([
+            {
+            type: 'input',
+            name: 'userArg',
+            message: 'Please provide Liri-bot with the song that you would like to look-up: '
+            }
+        ])
+        .then(answers => {
+            userArg = answers.userArg;
+            spotifyThisSong();
+        });
+    } else {
         spotifyThisSong();
-    });
-}
+    }
+} /// iqSpotifyThisSong();
+
 // node liri.js spotify-this-song <"name of song">
 // function to query the spotify API and display pertinent information.
 function spotifyThisSong() {
@@ -114,6 +145,26 @@ function spotifyThisSong() {
 } /// spotifyThisSong();
 
 // function to run inquirer to ask the user to input a movie title to look-up.
+function iqMovieThis() {
+    // Using inquirer, ask the user to input a movie title, assign that input to the variable userArg, and call the movieThis(); function.
+    // IF, userArg === "". THEN, call inquirer methods. ELSE, call movieThis(); function.
+    if (userArg === "") {
+        inquirer
+        .prompt([
+            {
+            type: 'input',
+            name: 'userArg',
+            message: 'Please provide Liri-bot with the movie that you would like to look-up: '
+            }
+        ])
+        .then(answers => {
+            userArg = answers.userArg;
+            movieThis();
+        });
+    } else {
+        movieThis();
+    }
+} /// iqMovieThis();
 
 // node liri.js movie-this <"name of movie">
 // function to query the omdb API and display pertinent information.
@@ -172,7 +223,7 @@ function movieThis() {
 // node liri.js do-what-it-says
 // function to read the file random.txt and use the information contained within to run one of the liri commands.
 function doWhatItSays() {
-    fs.readFile("random.txt", "utf8", function(err, data) {
+   fs.readFile("random.txt", "utf8", function(err, data) {
         if (err) {
           return console.log(err);
         }
@@ -180,14 +231,25 @@ function doWhatItSays() {
         // console.log(data);
         var randomArr = data.split(",");
 
-        console.log("The contents of random.txt is: " + data);
-
-        cmd = randomArr[0];
-        userArg = randomArr[1];
-
-        cmdSwitch();
+        // Use inquirer - list - To have the user choose from the different options provided in random.txt
+        inquirer
+            .prompt([
+                {
+                type: 'list',
+                name: 'userChoice',
+                message: 'Please choose from this list what you would like Liri-bot to accomplish: ',
+                choices: randomArr
+                }
+            ])
+            .then(answers => {
+                var userChoice = answers.userChoice;
+                var userChoiceArr = userChoice.split(":");
+                cmd = userChoiceArr[0];
+                userArg = userChoiceArr[1];
+                cmdSwitch();
+            });
       
-      });
+    });
 } /// doWhatItSays();
 
 // function to run the switch statment and call the other functions depending on the variable cmd.
@@ -200,7 +262,7 @@ function cmdSwitch() {
             iqSpotifyThisSong();
             break;
         case "movie-this":
-            movieThis();
+            iqMovieThis();
             break;
         case "do-what-it-says":
             doWhatItSays();
@@ -210,25 +272,7 @@ function cmdSwitch() {
 
 // cmdSwitch(); // Commented-out to add Inquirer package functionality.
 
-// Make the necessary revisions to the app to allow the user to interact with liri-bot using the inquirer package instead of process.argv
+//// Function call to start liri-bot ////
+makeAChoice(); //////////////////////////
+/////////////////////////////////////////
 
-// Use Inquirer - List - To have the user choose between 1 of 4 options: concert-this, spotify-this-song, movie-this, and do-what-it-says.
-inquirer
-  .prompt([
-    {
-      type: 'list',
-      name: 'cmd',
-      message: 'Please choose 1 of 4 tasks for Liri-bot to accomplish.',
-      choices: ['do-what-it-says', 'concert-this', 'spotify-this-song', 'movie-this']
-    }
-  ])
-  .then(answers => {
-    cmd = answers.cmd;
-    cmdSwitch();
-  });
-
-
-
-// Using inquirer, ask the user to input a movie title, assign that input to the variable userArg, and call the movieThis(); function.
-// Using inquirer, change the entire function to cycle through the comma-separated values and display the options as multiple choice for the user.
-    // after the user makes a selection, use the information located in the text file to run the appropriate function with the correct variable information.
