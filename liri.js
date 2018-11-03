@@ -10,30 +10,50 @@ var fs = require("fs");
 var cmd = ""; // Variable for switch statement, to determine function that the user wants to use.
 var userArg = ""; // Variable for user input from inquirer.
 
-var userChoice = [];
-
-
 // var cmd = process.argv[2]; // Commented-out to add Inquirer package functionality.
 // var userArg = process.argv[3]; // Commented-out to add Inquirer package functionality.
 // var artist = process.argv[3]; // Commented-out to add Inquirer package functionality.
 
 // console.log(queryURL);
 
+// function that uses inquirer - List - To have the user choose between 1 of 4 options: concert-this, spotify-this-song, movie-this, and do-what-it-says.
+function makeAChoice() {
+    inquirer
+      .prompt([
+        {
+          type: 'list',
+          name: 'cmd',
+          message: 'Please choose 1 of 4 tasks for Liri-bot to accomplish.',
+          choices: ['do-what-it-says', 'concert-this', 'spotify-this-song', 'movie-this']
+        }
+      ])
+      .then(answers => {
+        cmd = answers.cmd;
+        cmdSwitch();
+      });
+    } /// makeAChoice();
+    
+
 // function to run inquirer to ask the user to input an artist(s) to look-up.
 function iqConcertThis() {
     // Using inquirer, ask for the user to input an artist(s) name, assign that input to the variable userArg, and call the concertThis(); function.
-    inquirer
-    .prompt([
-        {
-        type: 'input',
-        name: 'userArg',
-        message: 'Please provide Liri-bot with the artist(s) you would like to look-up: '
-        }
-    ])
-    .then(answers => {
-        userArg = answers.userArg;
+    // IF, userArg === "". THEN, call inquirer methods. ELSE, call concertThis(); function.
+    if (userArg === "") {
+        inquirer
+        .prompt([
+            {
+            type: 'input',
+            name: 'userArg',
+            message: 'Please provide Liri-bot with the artist(s) you would like to look-up: '
+            }
+        ])
+        .then(answers => {
+            userArg = answers.userArg;
+            concertThis();
+        });
+    } else {
         concertThis();
-    });
+    }
 } /// iqConcertThis();
 
 // node liri.js concert-this <"name of artist">
@@ -127,18 +147,23 @@ function spotifyThisSong() {
 // function to run inquirer to ask the user to input a movie title to look-up.
 function iqMovieThis() {
     // Using inquirer, ask the user to input a movie title, assign that input to the variable userArg, and call the movieThis(); function.
-    inquirer
-    .prompt([
-        {
-        type: 'input',
-        name: 'userArg',
-        message: 'Please provide Liri-bot with the movie that you would like to look-up: '
-        }
-    ])
-    .then(answers => {
-        userArg = answers.userArg;
+    // IF, userArg === "". THEN, call inquirer methods. ELSE, call movieThis(); function.
+    if (userArg === "") {
+        inquirer
+        .prompt([
+            {
+            type: 'input',
+            name: 'userArg',
+            message: 'Please provide Liri-bot with the movie that you would like to look-up: '
+            }
+        ])
+        .then(answers => {
+            userArg = answers.userArg;
+            movieThis();
+        });
+    } else {
         movieThis();
-    });
+    }
 } /// iqMovieThis();
 
 // node liri.js movie-this <"name of movie">
@@ -247,19 +272,7 @@ function cmdSwitch() {
 
 // cmdSwitch(); // Commented-out to add Inquirer package functionality.
 
-// Make the necessary revisions to the app to allow the user to interact with liri-bot using the inquirer package instead of process.argv
+//// Function call to start liri-bot ////
+makeAChoice(); //////////////////////////
+/////////////////////////////////////////
 
-// Use Inquirer - List - To have the user choose between 1 of 4 options: concert-this, spotify-this-song, movie-this, and do-what-it-says.
-inquirer
-  .prompt([
-    {
-      type: 'list',
-      name: 'cmd',
-      message: 'Please choose 1 of 4 tasks for Liri-bot to accomplish.',
-      choices: ['do-what-it-says', 'concert-this', 'spotify-this-song', 'movie-this']
-    }
-  ])
-  .then(answers => {
-    cmd = answers.cmd;
-    cmdSwitch();
-  });
