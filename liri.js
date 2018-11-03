@@ -21,6 +21,8 @@ var artist = process.argv[3];
 // node liri.js concert-this <"name of artist">
 // function to query the bandsintown API and display pertinent information.
 function concertThis() {
+    // Using inquirer, ask for the user to input an artist(s) name, assign that input to the variable artist, and call the concertThis(); function.
+    
     // Use request package to query bandsintown API.
     var queryURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp"
 
@@ -181,9 +183,23 @@ function cmdSwitch() {
 
 // Make the necessary revisions to the app to allow the user to interact with liri-bot using the inquirer package instead of process.argv
 
-// Use Inquirer - Multiple choice - To have the user choose between 1 of 4 options: concert-this, spotify-this-song, movie-this, and do-what-it-says.
-// for [concert-this] - ask for the user to input an artist(s) name, assign that input to the variable artist, and call the concertThis(); function.
-// for [spotify-this-song] - ask for the user to input a song title, assign that input to the vaariable userArg, and call the spotifyThisSong(); function.
-// for [movie-this] - ask the user to input a movie title, assign that input to the variable userArg, and call the movieThis(); function.
-// for [do-what-it-says] - change the entire function to cycle through the comma-separated values and display the options as multiple choice for the user.
+// Use Inquirer - List - To have the user choose between 1 of 4 options: concert-this, spotify-this-song, movie-this, and do-what-it-says.
+inquirer
+  .prompt([
+    {
+      type: 'list',
+      name: 'cmd',
+      message: 'Please choose 1 of 4 tasks for Liri-bot to accomplish.',
+      choices: ['do-what-it-says', 'concert-this', 'spotify-this-song', 'movie-this']
+    }
+  ])
+  .then(answers => {
+    cmd = answers.cmd;
+    cmdSwitch();
+  });
+
+
+// Using inquirer, ask for the user to input a song title, assign that input to the variable userArg, and call the spotifyThisSong(); function.
+// Using inquirer, ask the user to input a movie title, assign that input to the variable userArg, and call the movieThis(); function.
+// Using inquirer, change the entire function to cycle through the comma-separated values and display the options as multiple choice for the user.
     // after the user makes a selection, use the information located in the text file to run the appropriate function with the correct variable information.
