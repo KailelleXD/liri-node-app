@@ -73,7 +73,7 @@ function concertThis() {
     
         // console.log(obj[0].venue.name);
             console.log(" ");
-            console.log("Here are some upcoming events involving: " + artist)
+            console.log("Here are some upcoming events involving: " + userArg)
             console.log("--------------------------------------------------");
     
             for (let i = 0; i < obj.length; i++) {
@@ -200,24 +200,6 @@ function movieThis() {
 
         }  
     });
-
-
-
-        // movie-this <movie name here>
-        // This will output the following information to your terminal/bash window.
-            // Title of the movie.
-            // Year of release.
-            // IMDB Rating of the movie.
-            // Rotten Tomatoes Rating of the movie.
-            // Country where the movie was produced.
-            // Language of the movie.
-            // Plot of the movie.
-            // Actors in the movie.
-        // If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody'
-        // Use the request package to retrieve data from OMDB API. Use the bootcamp API key (trilogy)
-
-
-
 }
 
 // node liri.js do-what-it-says
