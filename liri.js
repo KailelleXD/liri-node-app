@@ -8,21 +8,32 @@ var inquirer = require('inquirer');
 var fs = require("fs");
 
 // Variable for switch statement, to determine function that the user wants to use.
-var cmd = process.argv[2];
-var userArg = process.argv[3];
-
-// Below is the syntax used to access my API keys for this project while keeping them private to users online.
-// var spotify = new Spotify(keys.spotify);
-
-var artist = process.argv[3];
+// var cmd = process.argv[2]; // Commented-out to add Inquirer package functionality.
+// var userArg = process.argv[3]; // Commented-out to add Inquirer package functionality.
+// var artist = process.argv[3]; // Commented-out to add Inquirer package functionality.
 
 // console.log(queryURL);
 
+// function to run inquirer to ask the user to input an artist(s) to look-up.
+function iqConcertThis() {
+    // Using inquirer, ask for the user to input an artist(s) name, assign that input to the variable artist, and call the concertThis(); function.
+    inquirer
+    .prompt([
+        {
+        type: 'input',
+        name: 'artist',
+        message: 'Please provide Liri-bot with the artist(s) you would like to look-up: '
+        }
+    ])
+    .then(answers => {
+        artist = answers.artist;
+        concertThis();
+    });
+} /// iqConcertThis();
+
 // node liri.js concert-this <"name of artist">
 // function to query the bandsintown API and display pertinent information.
-function concertThis() {
-    // Using inquirer, ask for the user to input an artist(s) name, assign that input to the variable artist, and call the concertThis(); function.
-    
+function concertThis() {    
     // Use request package to query bandsintown API.
     var queryURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp"
 
@@ -55,6 +66,22 @@ function concertThis() {
     });
 } /// concertThis();
 
+// function to run inquirer to ask the user to input a song title to look-up.
+function iqSpotifyThisSong() {
+    // Using inquirer, ask for the user to input a song title, assign that input to the variable userArg, and call the spotifyThisSong(); function.
+    inquirer
+    .prompt([
+        {
+        type: 'input',
+        name: 'userArg',
+        message: 'Please provide Liri-bot with the song that you would like to look-up: '
+        }
+    ])
+    .then(answers => {
+        userArg = answers.userArg;
+        spotifyThisSong();
+    });
+}
 // node liri.js spotify-this-song <"name of song">
 // function to query the spotify API and display pertinent information.
 function spotifyThisSong() {
@@ -85,6 +112,8 @@ function spotifyThisSong() {
         console.log("--------------------------------------------------");
         });
 } /// spotifyThisSong();
+
+// function to run inquirer to ask the user to input a movie title to look-up.
 
 // node liri.js movie-this <"name of movie">
 // function to query the omdb API and display pertinent information.
@@ -165,10 +194,10 @@ function doWhatItSays() {
 function cmdSwitch() {
     switch(cmd) {
         case "concert-this":
-            concertThis();
+            iqConcertThis();
             break;
         case "spotify-this-song":
-            spotifyThisSong();
+            iqSpotifyThisSong();
             break;
         case "movie-this":
             movieThis();
@@ -199,7 +228,7 @@ inquirer
   });
 
 
-// Using inquirer, ask for the user to input a song title, assign that input to the variable userArg, and call the spotifyThisSong(); function.
+
 // Using inquirer, ask the user to input a movie title, assign that input to the variable userArg, and call the movieThis(); function.
 // Using inquirer, change the entire function to cycle through the comma-separated values and display the options as multiple choice for the user.
     // after the user makes a selection, use the information located in the text file to run the appropriate function with the correct variable information.
