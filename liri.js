@@ -75,6 +75,14 @@ function concertThis() {
             console.log(" ");
             console.log("Here are some upcoming events involving: " + userArg)
             console.log("--------------------------------------------------");
+
+            // log.txt ////////////////////
+            var text = "\nHere are some upcoming events involving: " + userArg + "\n--------------------------------------------------"
+            fs.appendFile("log.txt", text, function(err) {
+                if (err) {
+                    console.log(err);
+                }
+            });
     
             for (let i = 0; i < obj.length; i++) {
     
@@ -86,6 +94,14 @@ function concertThis() {
                 console.log("Location: " + obj[i].venue.city + " " + obj[i].venue.region);
                 console.log("Date: " + showDate);
                 console.log("-----------------------");
+
+                // log.txt ////////////////////
+                var text = "\nVenue: " + obj[i].venue.name + "\nLocation: " + obj[i].venue.city + " " + obj[i].venue.region + "\nDate: " + showDate + "\n-----------------------"
+                fs.appendFile("log.txt", text, function(err) {
+                    if (err) {
+                        console.log(err);
+                    }
+                });
             }
         }  
     });
@@ -141,7 +157,18 @@ function spotifyThisSong() {
         console.log("Click link to listen! " + extLink);
         console.log("Album name: " + albumName);
         console.log("--------------------------------------------------");
+
+            // log.txt ////////////////////
+            var text = "\nSpotify-ing the song: " + songTitle + "\n--------------------------------------------------\nArtist(s): " + artistInfo[0].name + "\nSong Title: " + songTitle + "\nClick link to listen! " + extLink + "\nAlbum name: " + albumName + "\n--------------------------------------------------";
+            fs.appendFile("log.txt", text, function(err) {
+                if (err) {
+                    console.log(err);
+                }
+            });
+
         });
+
+
 } /// spotifyThisSong();
 
 // function to run inquirer to ask the user to input a movie title to look-up.
@@ -187,6 +214,14 @@ function movieThis() {
         console.log("Title: " + obj.Title);
         console.log("Year of Release: " + obj.Year);
 
+        // log.txt ////////////////////
+        var text = "\nBelow is information about the movie: " + obj.Title + "\n-----------------------\nTitle: " + obj.Title + "\nYear of Release: " + obj.Year;
+        fs.appendFile("log.txt", text, function(err) {
+            if (err) {
+                console.log(err);
+            }
+        });
+
         for (let i = 0; i < obj.Ratings.length; i++) {
             console.log(obj.Ratings[i].Source + ": " + obj.Ratings[i].Value);
         }
@@ -197,6 +232,14 @@ function movieThis() {
         console.log("Plot Summary: " + obj.Plot);
         console.log("Actors: " + obj.Actors);
         console.log("-----------------------");
+
+        // log.txt ////////////////////
+        var text = "\nCountry of Origin: " + obj.Country + "\nLanguage: " + obj.Language + "\n-----------------------\nPlot Summary: " + obj.Plot + "\nActors: " + obj.Actors + "\n-----------------------";
+        fs.appendFile("log.txt", text, function(err) {
+            if (err) {
+                console.log(err);
+            }
+        });
 
         }  
     });
