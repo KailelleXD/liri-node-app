@@ -58,7 +58,7 @@ function iqConcertThis() {
 
 // node liri.js concert-this <"name of artist">
 // function to query the bandsintown API and display pertinent information.
-function concertThis() {    
+function concertThis() {
     // Use request package to query bandsintown API.
     var queryURL = "https://rest.bandsintown.com/artists/" + userArg + "/events?app_id=codingbootcamp"
 
@@ -103,7 +103,7 @@ function concertThis() {
                     }
                 });
             }
-        }  
+        }
     });
 } /// concertThis();
 
@@ -269,8 +269,8 @@ function doWhatItSays() {
             .then(answers => {
                 var userChoice = answers.userChoice;
                 var userChoiceArr = userChoice.split(":");
-                cmd = userChoiceArr[0];
-                userArg = userChoiceArr[1];
+                cmd = userChoiceArr[0].trim(" ");
+                userArg = userChoiceArr[1].trim(" ");
                 cmdSwitch();
             });
       
