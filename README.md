@@ -12,6 +12,9 @@ I wanted to create a CLI application that could allow for a user to get very spe
 
 ## Screenshots and Other Media
 
+### Link to YouTube video that shows basic functionality of Liri-bot
+https://youtu.be/aBYZDJNYK7M
+
 ### First list options for Liri-bot
 ![Liri-bot: Options](https://camo.githubusercontent.com/45d6a8b1fa634d8e843ce5e0d42819aa3e6a7ab1/68747470733a2f2f696d616765732e7a656e68756275736572636f6e74656e742e636f6d2f3562623434323864353864336239326466656466333038342f63333465633930342d613162302d346138352d393935372d323263653965396666376132)
 
