@@ -73,8 +73,16 @@ function concertThis() {
     
         // console.log(obj[0].venue.name);
             console.log(" ");
-            console.log("Here are some upcoming events involving: " + artist)
+            console.log("Here are some upcoming events involving: " + userArg)
             console.log("--------------------------------------------------");
+
+            // log.txt ////////////////////
+            var text = "\nHere are some upcoming events involving: " + userArg + "\n--------------------------------------------------"
+            fs.appendFile("log.txt", text, function(err) {
+                if (err) {
+                    console.log(err);
+                }
+            });
     
             for (let i = 0; i < obj.length; i++) {
     
@@ -86,6 +94,14 @@ function concertThis() {
                 console.log("Location: " + obj[i].venue.city + " " + obj[i].venue.region);
                 console.log("Date: " + showDate);
                 console.log("-----------------------");
+
+                // log.txt ////////////////////
+                var text = "\nVenue: " + obj[i].venue.name + "\nLocation: " + obj[i].venue.city + " " + obj[i].venue.region + "\nDate: " + showDate + "\n-----------------------"
+                fs.appendFile("log.txt", text, function(err) {
+                    if (err) {
+                        console.log(err);
+                    }
+                });
             }
         }  
     });
@@ -141,7 +157,18 @@ function spotifyThisSong() {
         console.log("Click link to listen! " + extLink);
         console.log("Album name: " + albumName);
         console.log("--------------------------------------------------");
+
+            // log.txt ////////////////////
+            var text = "\nSpotify-ing the song: " + songTitle + "\n--------------------------------------------------\nArtist(s): " + artistInfo[0].name + "\nSong Title: " + songTitle + "\nClick link to listen! " + extLink + "\nAlbum name: " + albumName + "\n--------------------------------------------------";
+            fs.appendFile("log.txt", text, function(err) {
+                if (err) {
+                    console.log(err);
+                }
+            });
+
         });
+
+
 } /// spotifyThisSong();
 
 // function to run inquirer to ask the user to input a movie title to look-up.
@@ -187,6 +214,14 @@ function movieThis() {
         console.log("Title: " + obj.Title);
         console.log("Year of Release: " + obj.Year);
 
+        // log.txt ////////////////////
+        var text = "\nBelow is information about the movie: " + obj.Title + "\n-----------------------\nTitle: " + obj.Title + "\nYear of Release: " + obj.Year;
+        fs.appendFile("log.txt", text, function(err) {
+            if (err) {
+                console.log(err);
+            }
+        });
+
         for (let i = 0; i < obj.Ratings.length; i++) {
             console.log(obj.Ratings[i].Source + ": " + obj.Ratings[i].Value);
         }
@@ -198,26 +233,16 @@ function movieThis() {
         console.log("Actors: " + obj.Actors);
         console.log("-----------------------");
 
+        // log.txt ////////////////////
+        var text = "\nCountry of Origin: " + obj.Country + "\nLanguage: " + obj.Language + "\n-----------------------\nPlot Summary: " + obj.Plot + "\nActors: " + obj.Actors + "\n-----------------------";
+        fs.appendFile("log.txt", text, function(err) {
+            if (err) {
+                console.log(err);
+            }
+        });
+
         }  
     });
-
-
-
-        // movie-this <movie name here>
-        // This will output the following information to your terminal/bash window.
-            // Title of the movie.
-            // Year of release.
-            // IMDB Rating of the movie.
-            // Rotten Tomatoes Rating of the movie.
-            // Country where the movie was produced.
-            // Language of the movie.
-            // Plot of the movie.
-            // Actors in the movie.
-        // If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody'
-        // Use the request package to retrieve data from OMDB API. Use the bootcamp API key (trilogy)
-
-
-
 }
 
 // node liri.js do-what-it-says
