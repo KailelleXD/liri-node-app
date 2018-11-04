@@ -31,7 +31,7 @@ I wanted to create a CLI application that could allow for a user to get very spe
 ### movie-this functionality
 ![Liri-bot: movie-this, displaying user input and information from OMDB API](https://camo.githubusercontent.com/de2b25ddbbc42b23ce7db7a7bd4ee40746bf26d6/68747470733a2f2f696d616765732e7a656e68756275736572636f6e74656e742e636f6d2f3562623434323864353864336239326466656466333038342f62356265366264352d386231312d346562632d383435642d613261383138623361303466)
 
-## Technology Used
+## Technologies Used
 
 * JavaScript
 * NodeJS
@@ -41,3 +41,81 @@ I wanted to create a CLI application that could allow for a user to get very spe
 * Clone the repository to your local computer
 * Run: NPM install
 * Run: Node liri.js
+
+## Code Examples - for move-this functionality
+
+```
+// function to run inquirer to ask the user to input a movie title to look-up.
+function iqMovieThis() {
+    // Using inquirer, ask the user to input a movie title, assign that input to the variable userArg, and call the movieThis(); function.
+    // IF, userArg === "". THEN, call inquirer methods. ELSE, call movieThis(); function.
+    if (userArg === "") {
+        inquirer
+        .prompt([
+            {
+            type: 'input',
+            name: 'userArg',
+            message: 'Please provide Liri-bot with the movie that you would like to look-up: '
+            }
+        ])
+        .then(answers => {
+            userArg = answers.userArg;
+            movieThis();
+        });
+    } else {
+        movieThis();
+    }
+} /// iqMovieThis();
+
+// node liri.js movie-this <"name of movie">
+// function to query the omdb API and display pertinent information.
+function movieThis() {
+
+    if (userArg === undefined) {
+        userArg = "Mr. Nobody";
+    }
+
+    var queryURL = "http://www.omdbapi.com/?apikey=trilogy&t=" + userArg
+    request(queryURL, function(err, res, body) {
+        // If the request was successful...
+      if (!err && res.statusCode === 200) {
+    
+        var obj = JSON.parse(body);
+
+        console.log(" ");
+        console.log("Below is information about the movie: " + obj.Title);
+        console.log("-----------------------");
+        console.log("Title: " + obj.Title);
+        console.log("Year of Release: " + obj.Year);
+
+        // log.txt ////////////////////
+        var text = "\nBelow is information about the movie: " + obj.Title + "\n-----------------------\nTitle: " + obj.Title + "\nYear of Release: " + obj.Year;
+        fs.appendFile("log.txt", text, function(err) {
+            if (err) {
+                console.log(err);
+            }
+        });
+
+        for (let i = 0; i < obj.Ratings.length; i++) {
+            console.log(obj.Ratings[i].Source + ": " + obj.Ratings[i].Value);
+        }
+
+        console.log("Country of Origin: " + obj.Country);
+        console.log("Language: " + obj.Language);
+        console.log("-----------------------");
+        console.log("Plot Summary: " + obj.Plot);
+        console.log("Actors: " + obj.Actors);
+        console.log("-----------------------");
+
+        // log.txt ////////////////////
+        var text = "\nCountry of Origin: " + obj.Country + "\nLanguage: " + obj.Language + "\n-----------------------\nPlot Summary: " + obj.Plot + "\nActors: " + obj.Actors + "\n-----------------------";
+        fs.appendFile("log.txt", text, function(err) {
+            if (err) {
+                console.log(err);
+            }
+        });
+
+        }  
+    });
+}
+```
