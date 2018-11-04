@@ -42,7 +42,7 @@ I wanted to create a CLI application that could allow for a user to get very spe
 * Run: NPM install
 * Run: Node liri.js
 
-## Code Examples - for move-this functionality
+## Code Examples - (for move-this functionality)
 
 ```
 // function to run inquirer to ask the user to input a movie title to look-up.
